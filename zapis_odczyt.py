@@ -5,7 +5,13 @@ from datetime import datetime
 from klasy import Dziennik, Pomiar
 
 def zapisz_dziennik(dziennik: Dziennik, sciezka: str) -> None:
-
+    """
+    Zapisuje wartosc dziennika do pliku JSON
+    do pliku zapisywany jest wzrost uzytkownika !! oraz lista pomiarow z parametrami
+    Zapis nadpisuje plik; tworzac aktualne wersje dziennika (malo rekordow wiec mozna?)
+    :param dziennik: obiekt dziennik ktory ma zostac zapisany
+    :param sciezka: sciezka do pliku (test.json)
+    """
     dane = {
         "wzrost_m": dziennik.wzrost_m,
         "pomiary": [
@@ -25,6 +31,17 @@ def zapisz_dziennik(dziennik: Dziennik, sciezka: str) -> None:
 def zaladuj_dziennik(sciezka: str) -> Dziennik:
     """
     Wczytywanie dziennika z pliku JSON + zwracanie nowego obiektu dziennik
+    Wzrost jest odczytywany z pola 'wzrost_m' w pliku!
+    a nastepnie odtwarzana jest lista pomiarow
+    uwaga:
+        wzrost uzytkownika wprowadzony przy stacie programu
+        zostanie napisany przy wybraniu opcji zaladowania istniejacego dziennika;
+        zakladamy ze uzytkownik raczej nie zmalal; jezeli program na kilku
+        uzytkownikow to zapis konkretnego dziennika powienien
+        sygnalizowac przynaleznosc ze wzgledu na roznice wzrostu pomiedzy uzytkownikami
+    :param sciezka: sciezka do pliku JSON (test.json)
+    :return: obiekt dziennik zawierajacy pomiary
+    :raises: FileNotFoundError gdzy plik nie istnieje(sciezka)
     """
     path = Path(sciezka)
     if not path.exists():

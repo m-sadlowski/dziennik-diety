@@ -3,7 +3,14 @@ from narzedzia import parsowanie_daty_godziny, formatuj_pomiar, ocena_bmi
 from zapis_odczyt import zapisz_dziennik, zaladuj_dziennik
 
 def dodaj_pomiar(dziennik: Dziennik) -> None:
-    """ Pobieranie danych od uzytkownika dziennika i dodanie nowego pomiaru"""
+    """
+    Dodaje nowy pomiar wagi na postawie danych wpisanych przez uzytkownika
+    Funkcja pobiera z klawiatury wage i opcjonalnie data + godzina pomiaru
+    w przypadku nie podania daty(enter) uzywana jest aktualna data i czas
+    Nowy pomiar jest zapisywany w obiekcie dziennik a sam wynik wypisywany
+    jest rowniez w terminalu(waga, BMI i jego ocena)
+    :param dziennik: obiekt Dziennik, do ktorego ma zostac przekazany pomiar
+    """
     waga_str = input("Podaj waga w kilogramach (z kropka): ")
     waga = float(waga_str.replace(" ", ""))
     data_str = input("Podaj date pomiaru wagi(dd.mm.rr)/ dzisiejsza = Enter").strip()
@@ -19,7 +26,12 @@ def dodaj_pomiar(dziennik: Dziennik) -> None:
     print(ocena_bmi(pomiar.bmi))
 
 def pokaz_pomiary(dziennik: Dziennik) -> None:
-    """Wyswietlanie wszystkich pomiarow dziennika"""
+    """
+    Wyswietla wszystkie pomiary zapisane w dzienniku
+    Jezeli w dzienniku nie ma pomiarow, wypisywana jest informacja
+    o braku pomiarow; powrot do menu
+    :param dziennik: obiekt Dziennik z lista pomiarow
+    """
     if not dziennik.pomiary:
         print("Brak pomiarow - najpierw dodaj jakis pomiar")
         return
@@ -28,7 +40,14 @@ def pokaz_pomiary(dziennik: Dziennik) -> None:
         print(formatuj_pomiar(pomiar))
 
 def pokaz_z_zakresu(dziennik: Dziennik) -> None:
-    """Wyswietla pomiary z wybranego zakresu dat i godzin"""
+    """
+    Wyswietlanie pomiarow z wybranego przez uzytkownika zakresu czasu
+
+    Pytanie o date i godzine poczatkowa oraz koncowa a nastepnie
+    wykorzystanie metody pomiar_okres z klasy Dziennik'a do
+    odfiltrowania odpowiednich wpisow
+    :param dziennik: obiekt Dziennik z ktorego maja zostac pobrane pomiary
+    """
     if not dziennik.pomiary:
         print("Brak pomiarow")
         return
@@ -49,7 +68,14 @@ def pokaz_z_zakresu(dziennik: Dziennik) -> None:
         print(formatuj_pomiar(pomiar))
 
 def pomiar_nieprawidlowe_bmi(dziennik: Dziennik) -> None:
-    """Pomiary z BMI poza norma"""
+    """
+    Wyswietla wszystkie pomiary dla ktorych
+    wspolczynnik BMI jest poza norma
+    Zakres przyjety to 18.5 - 24.9. Funkcja korzysta
+    z metody pomiar_nieprawidlowy klasy Dziennik a nastepnie
+    wypisuje kazdy nieprawidlowy pomiar wraz z ocena tekstowa
+    :param dziennik: obiekt Dziennik z lista pomiarow
+    """
     if not dziennik.pomiary:
         print("Brak pomiarow")
         return
@@ -64,6 +90,9 @@ def pomiar_nieprawidlowe_bmi(dziennik: Dziennik) -> None:
         print(" ", ocena_bmi(pomiar.bmi))
 
 def wyswietl_menu() -> None:
+    """
+    Wypisuje w terminalu glowne menu
+    """
     print("\n Dziennik przebiegu diety ")
     print("1. Dodaj nowy pomiar")
     print("2. Wyswietl wszystkie zapisane pomiary")
@@ -75,7 +104,10 @@ def wyswietl_menu() -> None:
 
 
 def main() -> None:
-    print("-- Test dziennika nr 4 ; json+testy --")
+    """
+    Glowna funkcja uruchamiajaca program dziennika diety
+    """
+    print("-- Dziennik diety --")
 
     wzrost_str = input("Podaj wzrost w metrach (z kropka): ")
     wzrost = float(wzrost_str.replace(" ", ""))
@@ -119,22 +151,6 @@ def main() -> None:
         else:
             print("Zle - sproboj ponownie")
 
-#    waga_str = input("Podaj waga w kilogramach (z kropka): ")
-#    waga = float(waga_str.replace(" ", ""))
-#
-#
-#   data_str = input("Podaj date pomiaru wagi(dd.mm.rr)/ dzisiejsza = Enter").strip()
-#    if data_str:
-#       godzina_str = input("Podaj godzine pomiaru(hh:mm): ").strip()
-#        data_pomiaru = parsowanie_daty_godziny(data_str, godzina_str)
-#        pomiar = dziennik.dodaj_pomiar(waga_kg = waga, timestamp = data_pomiaru)
-#    else:
-#        pomiar = dziennik.dodaj_pomiar(waga_kg = waga)
-#
-#    print()
-#    print("Zapisany pomiar: ")
-#    print(formatuj_pomiar(pomiar))
-#    print(ocena_bmi(pomiar.bmi))
 
 if __name__ == "__main__":
     main()
