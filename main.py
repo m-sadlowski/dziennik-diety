@@ -1,5 +1,6 @@
 from klasy import Dziennik
 from narzedzia import parsowanie_daty_godziny, formatuj_pomiar, ocena_bmi
+from zapis_odczyt import zapisz_dziennik, zaladuj_dziennik
 
 def dodaj_pomiar(dziennik: Dziennik) -> None:
     """ Pobieranie danych od uzytkownika dziennika i dodanie nowego pomiaru"""
@@ -68,11 +69,13 @@ def wyswietl_menu() -> None:
     print("2. Wyswietl wszystkie zapisane pomiary")
     print("3. Wyswietl pomiary z zapisanego okresu")
     print("4. Wyswietl pomiary z nieprawidlowym BMI")
+    print("5. Otworz dziennik z pliku")
+    print("6. Zapisz dziennik do pliku")
     print("0. Zakoncz")
 
 
 def main() -> None:
-    print("-- Test dziennika nr 3 ; menu! --")
+    print("-- Test dziennika nr 4 ; json+testy --")
 
     wzrost_str = input("Podaj wzrost w metrach (z kropka): ")
     wzrost = float(wzrost_str.replace(" ", ""))
@@ -90,6 +93,26 @@ def main() -> None:
             pokaz_z_zakresu(dziennik)
         elif wybor == "4":
             pomiar_nieprawidlowe_bmi(dziennik)
+        elif wybor == "5":
+            nazwa = input("Podaj nazwe pliku do wczytania(json): ").strip()
+            if not nazwa:
+                print("Nie podano nazwy")
+            else:
+                try:
+                    dziennik = zaladuj_dziennik(nazwa)
+                    print(f"Wczytano dziennik z pliku '{nazwa}'")
+                except FileNotFoundError:
+                    print("Taki plik nie istnieje")
+        elif wybor == "6":
+            nazwa = input("Podaj nazwe pliku do zapisu(json): ").strip()
+            if not nazwa:
+                print("Nie podano nazwy")
+            else:
+                try:
+                    zapisz_dziennik(dziennik, nazwa)
+                    print(f"Dziennik zapisany do pliku '{nazwa}'")
+                except FileNotFoundError:
+                    print("Taki plik nie istnieje")
         elif wybor == "0":
             print("Koniec programu")
             break

@@ -1,0 +1,2 @@
+# Projekt korzysta ze standardowej biblioteki Pythona
+# Brak dodatkow do zainstalowania pip'em
